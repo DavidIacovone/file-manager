@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
   db:
     image: postgres
@@ -8,3 +8,20 @@ services:
         POSTGRES_PASSWORD: admin
     ports:
         - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  file-manager-api:
+    build: ./server
+    command: npm start
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://admin:admin@db:5432/file-manager-db
+
+volumes:
+  db-data:

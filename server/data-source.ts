@@ -6,10 +6,8 @@ import FileVersion from './domain/FileVersion';
 
 const AppDataSource = new DataSource({
     type: "postgres",
-    host: "localhost",
+    url: "postgres://admin:admin@db:5432/file-manager-db",
     port: 5432,
-    username: "admin",
-    password: "admin",
     database: "file-manager-db",
     entities: [File, Folder, FileVersion],
     synchronize: true,
