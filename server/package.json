@@ -5,7 +5,14 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "tsc | node dist/server.js",
-    "dev": "ts-node server.ts"
+    "dev": "ts-node server.ts",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "moduleFileExtensions": ["ts", "js"],
+    "testMatch": ["**/tests/**/*.test.ts"]
   },
   "author": "David Iacovone",
   "license": "ISC",
@@ -20,8 +27,11 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.13",
     "@types/multer": "^1.4.12",
     "@types/node": "^22.7.4",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"
   }
