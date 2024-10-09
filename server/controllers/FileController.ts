@@ -13,22 +13,46 @@ export default class FileController {
         this.router = Router();
     }
 
+    /**
+     * Retrieves files associated with a specific folder.
+     * @param id - The ID of the folder.
+     * @returns A promise that resolves to the list of files.
+     */
     async getFiles(id: number) {
         return await this.fileService.getFiles({ folder: { id: id } });
     }
 
+    /**
+     * Creates a new file.
+     * @param fileData - The data of the file to be created.
+     * @returns A promise that resolves to the created file.
+     */
     async createFile(fileData: FileDTO) {
         return await this.fileService.createFile(fileData);
     }
 
+    /**
+     * Deletes a file by its ID.
+     * @param id - The ID of the file to be deleted.
+     * @returns A promise that resolves to a boolean indicating success.
+     */
     async deleteFile(id: number) {
         return await this.fileService.deleteFile(id);
     }
 
+    /**
+     * Updates an existing file.
+     * @param file - The data of the file to be updated.
+     * @returns A promise that resolves to the updated file.
+     */
     async updateFile(file: FileDTO) {
         return await this.fileService.updateFile(file);
     }
 
+    /**
+     * Defines the routes for file operations.
+     * @returns The configured router.
+     */
     routes(): Router {
         this.router.get('/:id', async (req, res) => {
             const result = await this.getFiles(parseInt(req.params.id));

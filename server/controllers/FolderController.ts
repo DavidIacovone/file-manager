@@ -14,22 +14,45 @@ export default class FolderController {
         this.router = Router();
     }
 
+    /**
+     * Retrieves all folders.
+     * @returns A promise that resolves to the list of folders.
+     */
     async getFolders() {
         return await this.folderService.getFolders();
     }
 
+    /**
+     * Deletes a folder and its content by its ID.
+     * @param id - The ID of the folder to be deleted.
+     * @returns A promise that resolves to a boolean indicating success.
+     */
     async deleteFolder(id: number) {
         return await this.folderService.deleteFolder(id);
     }
 
+    /**
+     * Creates a new folder.
+     * @param folder - The data of the folder to be created.
+     * @returns A promise that resolves to the created folder.
+     */
     async createFolder(folder: FolderDTO) {
         return await this.folderService.createFolder(folder);
     }
 
+    /**
+     * Updates an existing folder.
+     * @param folder - The data of the folder to be updated.
+     * @returns A promise that resolves to the updated folder.
+     */
     async updateFolder(folder: FolderDTO) {
         return await this.folderService.updateFolder(folder);
     }
 
+    /**
+     * Defines the routes for folder operations.
+     * @returns The configured router.
+     */
     routes(): Router {
         this.router.get('/', async (req, res) => {
             const result = await this.getFolders();
