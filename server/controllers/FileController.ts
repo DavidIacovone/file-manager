@@ -30,16 +30,44 @@ export default class FileController {
     }
 
     routes(): Router {
-        this.router.get('/:id', async (req, res) => { res.send(await this.getFiles(parseInt(req.params.id))) });
+        this.router.get('/:id', async (req, res) => {
+            const result = await this.getFiles(parseInt(req.params.id));
+            if (result instanceof Error) {
+                res.status(500).send(result.message);
+            } else {
+                res.send(result);
+            }
+        });
+
         this.router.post('/', async (req, res) => {
-            const fileDTO = {...req.file, description: req.body.description} as FileDTO;
-            res.send(await this.createFile(fileDTO))
+            const fileDTO = { ...req.file, description: req.body.description } as FileDTO;
+            const result = await this.createFile(fileDTO);
+            if (result instanceof Error) {
+                res.status(400).send(result.message);
+            } else {
+                res.status(201).send(result);
+            }
         });
-        this.router.delete('/', async (req, res) => { res.send(await this.deleteFile(req.body.id)) });
+
+        this.router.delete('/', async (req, res) => {
+            const result = await this.deleteFile(parseInt(req.body.id));
+            if (result instanceof Error) {
+                res.status(404).send(result.message);
+            } else {
+                res.sendStatus(204);
+            }
+        });
+
         this.router.put('/', async (req, res) => {
-            const fileDTO = {...req.file, id: req.body.id, description: req.body.description} as FileDTO;
-            res.send(await this.updateFile(fileDTO))
+            const fileDTO = { ...req.file, id: req.body.id, description: req.body.description } as FileDTO;
+            const result = await this.updateFile(fileDTO);
+            if (result instanceof Error) {
+                res.status(400).send(result.message);
+            } else {
+                res.send(result);
+            }
         });
+
         return this.router;
     }
 }

@@ -31,10 +31,41 @@ export default class FolderController {
     }
 
     routes(): Router {
-        this.router.get('/', async (req, res) => { res.send(await this.getFolders()) });
-        this.router.delete('/', async (req, res) => { res.send(await this.deleteFolder(req.body.id)) });
-        this.router.post('/', async (req, res) => { res.send(await this.createFolder(req.body)) });
-        this.router.put('/', async (req, res) => { res.send(await this.updateFolder(req.body)) });
+        this.router.get('/', async (req, res) => {
+            const result = await this.getFolders();
+            if (result instanceof Error) {
+                res.status(500).send(result.message);
+            } else {
+                res.send(result);
+            }
+        });
+
+        this.router.delete('/', async (req, res) => {
+            const result = await this.deleteFolder(req.body.id);
+            if (result instanceof Error) {
+                res.status(404).send(result.message);
+            } else {
+                res.sendStatus(204);
+            }
+        });
+
+        this.router.post('/', async (req, res) => {
+            const result = await this.createFolder(req.body);
+            if (result instanceof Error) {
+                res.status(400).send(result.message);
+            } else {
+                res.status(201).send(result);
+            }
+        });
+
+        this.router.put('/', async (req, res) => {
+            const result = await this.updateFolder(req.body);
+            if (result instanceof Error) {
+                res.status(400).send(result.message);
+            } else {
+                res.send(result);
+            }
+        });
 
         return this.router;
     }
