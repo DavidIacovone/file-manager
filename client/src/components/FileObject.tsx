@@ -38,6 +38,7 @@ function FileObject(props: IFile) {
         }).then(response => {
             const data = response.data as IFile;
             setSelectedVersion('Version ' + data.versions[data.versions.length - 1].version.toString());
+            props.versions = data.versions
         }).catch(error => {
             console.error('Error updating file', error);
         });

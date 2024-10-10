@@ -23,6 +23,15 @@ services:
       - db
     environment:
       DATABASE_URL: postgres://admin:admin@db:5432/file-manager-db
+  file-manager-client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    depends_on:
+      - file-manager-api
+
 
 volumes:
   db-data:
