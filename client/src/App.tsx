@@ -1,11 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MainFolderView from './components/MainFolderView';
+import FolderView from './components/FolderView';
 
 function App() {
-  return (
-    <div className="App">Hello world!</div>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<MainFolderView />} />
+                <Route path="/folder/:id" element={<FolderView />} />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
