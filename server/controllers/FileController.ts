@@ -1,12 +1,12 @@
 import { inject, injectable } from 'tsyringe';
-import { Router } from 'express';
+import e, { Router } from 'express';
 import FileDTO from '../dto/FileDTO';
 import { IFileService } from '../services/IFileService';
 
 @injectable()
 export default class FileController {
-    router: Router;
-    fileService: IFileService;
+    private readonly router: Router;
+    private readonly fileService: IFileService;
 
     constructor(@inject('IFileService') fileService: IFileService) {
         this.fileService = fileService;
@@ -54,7 +54,7 @@ export default class FileController {
      * @returns The configured router.
      */
     routes(): Router {
-        this.router.get('/:id', async (req, res) => {
+        this.router.get('/data/:id', async (req, res) => {
             const result = await this.getFiles(parseInt(req.params.id));
             if (result instanceof Error) {
                 res.status(500).send(result.message);
@@ -89,6 +89,14 @@ export default class FileController {
                 res.status(400).send(result.message);
             } else {
                 res.send(result);
+            }
+        });
+
+        this.router.get('/download', async (req, res) => {
+            try {
+                res.download(req.query.path as string);
+            } catch (error) {
+                res.status(404).send('File not found');
             }
         });
 

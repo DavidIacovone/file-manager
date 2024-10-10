@@ -10,8 +10,14 @@ COPY package*.json ./
 # Install the dependencies
 RUN npm install
 
+# Create the uploads folder
+RUN mkdir -p /app/uploads
+
 # Copy the rest of the application code to the working directory
 COPY . .
+
+# Remove the tests directory
+RUN rm -rf /app/tests
 
 # Expose the port the app runs on
 EXPOSE 3000

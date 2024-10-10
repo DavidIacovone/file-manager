@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import File from './File';
 
 /**
@@ -24,6 +24,12 @@ export default class FileVersion {
      */
     @Column()
     url: string;
+
+    /**
+     * Date when the file version was created.
+     */
+    @CreateDateColumn()
+    createAt: Date;
 
     /**
      * The file to which this version belongs.

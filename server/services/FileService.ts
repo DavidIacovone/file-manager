@@ -9,8 +9,8 @@ import FileVersion from '../domain/FileVersion';
 
 @injectable()
 export default  class FileService implements IFileService {
-    fileRepository: Repository<File>
-    fileVersionRepository: Repository<FileVersion>
+    private readonly fileRepository: Repository<File>
+    private readonly fileVersionRepository: Repository<FileVersion>
 
     constructor() {
         this.fileRepository = AppDataSource.getRepository(File);

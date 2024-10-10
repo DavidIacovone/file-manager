@@ -10,8 +10,8 @@ import { IFileService } from './IFileService';
 
 @injectable()
 export default class FolderService implements IFolderService {
-    folderRepository: Repository<Folder>
-    fileService: IFileService
+    private readonly folderRepository: Repository<Folder>
+    private readonly fileService: IFileService
 
     constructor(@inject('IFileService') fileService: IFileService) {
         this.folderRepository = AppDataSource.getRepository(Folder);

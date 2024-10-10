@@ -15,7 +15,8 @@ services:
     command: npm start
     volumes:
       - ./server:/app
-      - /app/node_modules
+      - /app/
+      - /app/uploads
     ports:
       - "3000:3000"
     depends_on:

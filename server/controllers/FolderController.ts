@@ -6,8 +6,8 @@ import { IFolderService } from '../services/IFolderService';
 
 @injectable()
 export default class FolderController {
-    router: Router;
-    folderService: IFolderService;
+    private readonly router: Router;
+    private readonly folderService: IFolderService;
 
     constructor(@inject('IFolderService') folderService: IFolderService) {
         this.folderService = folderService;
