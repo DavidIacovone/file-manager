@@ -1,7 +1,9 @@
 import "reflect-metadata";
 import express, { Express } from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import multer, { Multer } from 'multer';
+import storage from './multerConfig';
 import { container } from 'tsyringe';
 import AppDataSource from './data-source';
 import FileController from './controllers/FileController';
@@ -27,10 +29,11 @@ const fileController = container.resolve(FileController);
 // Initialize the Express app and multer
 // Multer is a middleware for handling file uploads and stores them in the 'uploads/' directory
 // In production, you should store the files in a cloud storage service like AWS S3 or similar
-const uploadFileMiddleware: Multer = multer({ dest: 'uploads/' });
+const uploadFileMiddleware: Multer = multer({ storage: storage  });
 const app: Express = express();
 
 // add middleware
+app.use(cors());
 app.use(bodyParser.json());
 
 // add routes

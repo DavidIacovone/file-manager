@@ -30,13 +30,20 @@ export default  class FileService implements IFileService {
 
     async deleteFile(id: number): Promise<void | Error> {
         try {
-            const file = await this.fileRepository.findOneBy({ id: id });
+            const file = await this.fileRepository.findOne({
+                where: { id: id },
+                relations: ['versions']
+            });
 
             if (!file) {
                 throw new Error('File not found');
             }
 
-            await this.fileRepository.delete(file);
+            for (const version of file.versions) {
+                await this.fileVersionRepository.delete(version.id);
+            }
+
+            await this.fileRepository.delete(file.id);
         } catch (error) {
             return new Error(error as string);
         }
@@ -62,7 +69,12 @@ export default  class FileService implements IFileService {
 
             await this.fileVersionRepository.save(fileVersion);
 
-            return savedFile;
+            const fileWithVersion = await this.fileRepository.findOne({
+                where: { id: savedFile.id },
+                relations: ['versions']
+            });
+
+            return fileWithVersion as File;
         } catch (error) {
             return new Error(error as string);
         }
@@ -91,7 +103,14 @@ export default  class FileService implements IFileService {
             file.name = fileDTO.originalname;
             file.url = fileDTO.path;
 
-            return await this.fileRepository.save(file);
+            await this.fileRepository.save(file);
+
+            const fileWithVersion = await this.fileRepository.findOne({
+                where: { id: fileDTO.id },
+                relations: ['versions']
+            });
+
+            return fileWithVersion as File;
         } catch (error) {
             return new Error(error as string);
         }
