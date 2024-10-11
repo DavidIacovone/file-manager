@@ -2,6 +2,12 @@ version: "3.8"
 services:
   db:
     image: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d file-manager-db"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
     environment:
         POSTGRES_DB: file-manager-db
         POSTGRES_USER: admin
@@ -20,7 +26,8 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DATABASE_URL: postgres://admin:admin@db:5432/file-manager-db
   file-manager-client:
