@@ -10,6 +10,7 @@ interface IFolderWithDelete extends IFolder {
 function Folder(props: IFolderWithDelete) {
     const navigate = useNavigate();
 
+    // Navigate to folder view
     const handleFileClick = (id: number, name: string) => {
         navigate(`/folder/${id}`, { state: { name } });
     }
@@ -37,7 +38,7 @@ function Folder(props: IFolderWithDelete) {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary"
+                            <button type="button" className="btn btn-danger"
                                     onClick={() => props.deleteFolder(props.id)} data-bs-dismiss="modal">Delete
                             </button>
                         </div>

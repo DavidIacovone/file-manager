@@ -7,34 +7,37 @@ function MainFolderView() {
   const [folders, setFolders] = React.useState<IFolder[]>([]);
   const [newFolderName, setNewFolderName] = React.useState('');
 
-  React.useEffect(() => {
-    axios.get('http://localhost:3000/folders')
-        .then(response => {
-          setFolders(response.data);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-  }, []);
+// Fetches the list of folders from the server when the component mounts
+    React.useEffect(() => {
+        axios.get('http://localhost:3000/folders')
+            .then(response => {
+                setFolders(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, []);
 
-  const addFolder = () => {
-    axios.post('http://localhost:3000/folders', { name: newFolderName })
-        .then(response => {
-          setFolders([...folders, response.data]);
-          setNewFolderName('');
-        })
-        .catch(error => {
-          console.error(error);
-        });
-  }
+// Adds a new folder by sending a POST request to the server
+    const addFolder = () => {
+        axios.post('http://localhost:3000/folders', { name: newFolderName })
+            .then(response => {
+                setFolders([...folders, response.data]);
+                setNewFolderName('');
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
-  const deleteFolder = (id: number) => {
-      axios.delete('http://localhost:3000/folders/', { data: { id: id }}).then(response => {
+// Deletes a folder by sending a DELETE request to the server
+    const deleteFolder = (id: number) => {
+        axios.delete('http://localhost:3000/folders/', { data: { id: id }}).then(response => {
             setFolders(folders.filter(folder => folder.id !== id));
-      }).catch(error => {
+        }).catch(error => {
             console.error(error);
-      })
-  }
+        })
+    }
 
 
     return (

@@ -3,29 +3,35 @@ import file from '../static/file.svg';
 import { IFile, IVersion } from '../interfaces/IFile';
 import axios from 'axios';
 
-function FileObject(props: IFile) {
+interface IFileWithUpdate extends IFile {
+    updateFile: (file: IFile) => void;
+}
+
+function FileObject(props: IFileWithUpdate) {
     const [selectedVersion, setSelectedVersion] = useState<string>(`Version ${props.versions[0].version.toString()}`);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
 
+// Function to handle the selection of a file version
+// Sets the selected version state to the chosen version
     const handleSelect = (version: IVersion) => {
         setSelectedVersion(`Version ${version.version}`);
     };
 
+// Function to handle the download of a file
+// Creates a temporary anchor element to trigger the download
     const handleDownload = (path: string) => {
-        axios.get(`http://localhost:3000/files/download?path=${path}`).then(response => {
-            const url = window.URL.createObjectURL(new Blob([response.data], { type: response.headers['content-type'] }));
-            const link = document.createElement('a');
-            link.href = url;
-            const contentDisposition = response.headers['content-disposition'];
-            const fileName = contentDisposition ? contentDisposition.split('filename=')[1].split(';')[0].replace(/['"]/g, '') : 'file';
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-        });
+        const url = `http://localhost:3000/files/download?path=${path}`;
+        const link = document.createElement('a');
+        link.href = url;
+        const fileName = url.split('/').pop() ?? 'file';
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
+// Function to handle the update of a file
+// Sends a PUT request with the file data to update the file on the server
     const handleUpdate = (id: number, file: File) => {
         const formData = new FormData();
         formData.append('file', file);
@@ -37,13 +43,15 @@ function FileObject(props: IFile) {
             }
         }).then(response => {
             const data = response.data as IFile;
+            props.updateFile(data);
             setSelectedVersion('Version ' + data.versions[data.versions.length - 1].version.toString());
-            props.versions = data.versions
         }).catch(error => {
             console.error('Error updating file', error);
         });
     };
 
+// Function to handle the deletion of a file
+// Sends a DELETE request to remove the file from the server
     const handleDelete = (id: number) => {
         axios.delete(`http://localhost:3000/files`, { data: { id: id } }).then(response => {
             window.location.reload();
@@ -101,9 +109,9 @@ function FileObject(props: IFile) {
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close
                                 </button>
-                                <button type="button" className="btn btn-primary"
+                                <button type="button" className="btn btn-warning"
                                         onClick={() => handleUpdate(props.id, fileInputRef.current?.files?.[0] as File)}
-                                        data-bs-dismiss="modal">Create
+                                        data-bs-dismiss="modal">Update
                                 </button>
                             </div>
                         </div>
