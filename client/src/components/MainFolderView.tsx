@@ -75,7 +75,7 @@ function MainFolderView() {
               </div>
               <div className="row text-center p-4 mt-4 mx-auto">
                   {folders.map((folder) => (
-                      <div className="col-md-4" key={folder.id}>
+                      <div className="col-md-6" key={folder.id}>
                           <Folder id={folder.id} name={folder.name} deleteFolder={deleteFolder}/>
                       </div>
                   ))}
