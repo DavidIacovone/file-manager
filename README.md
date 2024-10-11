@@ -69,3 +69,8 @@ The File Manager Application is designed to provide a seamless experience for ma
 3. **API Versioning**: Introduce API versioning to manage changes and updates to the API without breaking existing clients. This can be done by including version numbers in the API endpoints (e.g., `/api/v1/files`).
 4. **Request Validation**: Implement request validation on the server-side using libraries like Joi or Yup to ensure that incoming requests meet the required schema and constraints, improving security and data integrity.
 5. **Error Handling**: Enhance error handling by implementing custom error messages, status codes, and logging to provide better feedback to users and developers in case of failures.
+
+Shield: [![CC BY 4.0][cc-by-shield]][cc-by]
+
+This work is licensed under a
+[Creative Commons Attribution 4.0 International License][cc-by].
