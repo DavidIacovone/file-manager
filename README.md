@@ -47,7 +47,7 @@ The File Manager Application is designed to provide a seamless experience for ma
 
 ### API Endpoints
 
-1. **Upload File**: `POST /files/data` - Accepts a file and metadata, saves the file to the server, and stores metadata in the database.
+1. **Create File**: `POST /files/data` - Accepts a file and metadata, saves the file to the server, and stores metadata in the database.
 2. **Download File**: `GET /files/download` - Accepts a file path as a query parameter, retrieves the file from the server, and sends it to the client for download.
 3. **List Files**: `GET /files` - Retrieves a list of all files from the server.
 3. **Update File**: `PUT /files` - Accepts a file and metadata, updates the existing file on the server, and updates the metadata in the database.
